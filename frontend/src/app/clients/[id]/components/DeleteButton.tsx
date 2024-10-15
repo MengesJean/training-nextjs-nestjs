@@ -1,11 +1,10 @@
 "use client";
-import React from 'react';
-import {Button} from "@/components/ui/button";
-import {deleteClient} from "@/lib/actions/client.actions";
 
-const DeleteButton = ({id}) => {
+import {Button} from "@/components/ui/button";
+
+const DeleteButton = ({id, callback}) => {
     const handleDelete = async () => {
-        await deleteClient(id);
+        await callback(id);
     }
     return (
             <Button

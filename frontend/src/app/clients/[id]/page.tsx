@@ -19,11 +19,6 @@ const Page = async ({params}: { params: { id: string } }) => {
     const client = await fetch(`${process.env.API_URL}/clients/${params.id}`);
     const data: Client = await client.json();
 
-    const handleDelete = async () => {
-        "use server";
-        await deleteClient(data.id);
-    }
-
     return (
         <div>
             <h1 className="text-4xl font-bold">{data.name}</h1>
@@ -38,10 +33,10 @@ const Page = async ({params}: { params: { id: string } }) => {
                             <ul className="space-y-2">
                                 <li><span className="font-semibold">Name: </span>{data.name}</li>
                                 <li><span
-                                    className="font-semibold">Created at: </span>{dateFormater({dateString: data.createdAt.toString()})}
+                                    className="font-semibold">Created at: </span>{dateFormater({dateString: data.createdAt.toString(), formatString: "dd/MM/yyyy HH:mm"})}
                                 </li>
                                 <li><span
-                                    className="font-semibold">Updated at: </span>{dateFormater({dateString: data.updatedAt.toString()})}
+                                    className="font-semibold">Updated at: </span>{dateFormater({dateString: data.updatedAt.toString(), formatString: "dd/MM/yyyy HH:mm"})}
                                 </li>
                             </ul>
                         </CardContent>
@@ -60,7 +55,7 @@ const Page = async ({params}: { params: { id: string } }) => {
                                             <DrawerDescription>You cannot come back after this.</DrawerDescription>
                                         </DrawerHeader>
                                         <DrawerFooter>
-                                            <DeleteButton id={data.id}/>
+                                            <DeleteButton id={data.id} callback={await deleteClient}/>
                                             <Button variant="outline" asChild={true}>
                                                 <DrawerClose>
                                                     Cancel

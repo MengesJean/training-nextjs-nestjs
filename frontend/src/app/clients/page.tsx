@@ -20,8 +20,8 @@ const Page = async () => {
     const clients = data.map(client => {
         return {
             ...client,
-            createdAt: dateFormater({dateString: client.createdAt.toString()}),
-            updatedAt: dateFormater({dateString: client.updatedAt.toString()})
+            createdAt: dateFormater({dateString: client.createdAt.toString(), formatString: "dd/MM/yyyy HH:mm:ss"}),
+            updatedAt: dateFormater({dateString: client.updatedAt.toString(), formatString: "dd/MM/yyyy HH:mm:ss"})
         }
     })
 
