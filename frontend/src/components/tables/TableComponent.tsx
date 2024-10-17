@@ -13,11 +13,12 @@ import {useState} from "react";
 import {Input} from "@/components/ui/input";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import {Client} from "@/lib/types/client.type";
 
 
 interface TableComponentProps {
-    columns: [];
-    clients: [];
+    columns: [ColumnDef<Client>];
+    clients: Client[];
     filterId: string;
     filterName: string;
     slug: string;

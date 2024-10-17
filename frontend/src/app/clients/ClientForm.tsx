@@ -1,12 +1,12 @@
 "use client";
-import React from 'react';
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {createClient} from "@/lib/actions/client.actions";
+import {Client} from "@/lib/types/client.type";
+import {toast} from "sonner";
 
 
 
@@ -16,22 +16,27 @@ const clientSchema = z.object({
     }).max(255, {
         message: "Name is too long (255 max)",
     }),
+    id: z.number().optional(),
 });
 
+type ClientFormProps = {
+    client: Client | null;
+    callback: (values: z.infer<typeof clientSchema>) => void;
+}
 
-
-const CreateForm = () => {
+const ClientForm = ({client = null, callback}: ClientFormProps) => {
     const form = useForm<z.infer<typeof clientSchema>>({
         resolver: zodResolver(clientSchema),
         defaultValues: {
-            name: "",
-        }
+            name: client?.name ?? "",
+        },
     })
 
     const onSubmit = async (values: z.infer<typeof clientSchema>) => {
-        console.log(values);
-        const response = await createClient(values);
-        console.log(response);
+        if(client?.id) {
+            values.id = client.id;
+        }
+        return await callback(values);
 
     }
     return (
@@ -58,4 +63,4 @@ const CreateForm = () => {
     );
 };
 
-export default CreateForm;
+export default ClientForm;

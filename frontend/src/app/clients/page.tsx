@@ -3,8 +3,8 @@ import {Client} from "@/lib/types/client.type";
 import TableComponent from "@/components/tables/TableComponent";
 import {columns} from "@/app/clients/clientColumns";
 import {dateFormater} from "@/lib/utils";
-import Link from "next/link";
-import {Button} from "@/components/ui/button";
+import ClientFormDialog from "@/app/clients/ClientFormDialog";
+import {createClient} from "@/lib/actions/client.actions";
 
 const Page = async () => {
     const response = await fetch(`${process.env.API_URL}/clients`, {
@@ -29,11 +29,7 @@ const Page = async () => {
         <div>
             <h1 className="text-4xl font-bold">My clients</h1>
             <div className="mt-4">
-                <Link href={`/clients/create`}>
-                    <Button>
-                        Create new client
-                    </Button>
-                </Link>
+                <ClientFormDialog label={"Create new client"} callback={createClient}/>
             </div>
             <TableComponent clients={clients} columns={columns} filterId={"name"} filterName={"Name"} slug={"/clients/"}/>
         </div>
