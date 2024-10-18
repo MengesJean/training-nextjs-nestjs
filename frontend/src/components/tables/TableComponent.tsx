@@ -17,19 +17,19 @@ import {Client} from "@/lib/types/client.type";
 
 
 interface TableComponentProps {
-    columns: [ColumnDef<Client>];
-    clients: Client[];
+    columns: [ColumnDef<any>];
+    data: [object];
     filterId: string;
     filterName: string;
     slug: string;
 }
 
 
-const TableComponent = ({columns, clients, filterId, filterName, slug }: TableComponentProps) => {
+const TableComponent = ({columns, data, filterId, filterName, slug }: TableComponentProps) => {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const table = useReactTable({
-        data: clients,
+        data: data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,

@@ -1,10 +1,8 @@
 "use server";
 
-import {redirect} from "next/navigation";
 import {revalidateTag} from "next/cache";
 
-export const createContact = async (contact, client) => {
-    contact.client = client;
+export const createContact = async (contact) => {
     const response = await fetch(`${process.env.API_URL}/contacts`, {
         method: "POST",
         body: JSON.stringify(contact),
@@ -15,7 +13,9 @@ export const createContact = async (contact, client) => {
     const json = await response.json();
     if(json.statusCode !== 400) {
         revalidateTag("clients");
-        redirect(`/clients/${client.id}`);
+        return {
+            success: true,
+        }
     } else {
         return {
             error: json.message,

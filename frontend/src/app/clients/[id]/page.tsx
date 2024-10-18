@@ -13,14 +13,16 @@ import {
     DrawerTitle,
     DrawerTrigger
 } from "@/components/ui/drawer";
-import DeleteButton from "@/components/DeleteButton";
+import DeleteButton from "@/components/clients/DeleteButton";
 import ContactForm from "@/app/clients/[id]/components/ContactForm";
-import {deleteContact} from "@/lib/actions/contact.actions";
+import {createContact, deleteContact} from "@/lib/actions/contact.actions";
 import {buttonVariants} from "@/components/ui/button";
 import {X} from "lucide-react";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
-import ClientFormDialog from "@/app/clients/ClientFormDialog";
+import Projects from "@/app/clients/[id]/components/Projects";
+import FormDialog from "@/components/FormDialog";
+import ClientForm from "@/app/clients/ClientForm";
 
 const Page = async ({params}: { params: { id: string } }) => {
     const client = await fetch(`${process.env.API_URL}/clients/${params.id}`, {
@@ -58,7 +60,7 @@ const Page = async ({params}: { params: { id: string } }) => {
                             </ul>
                         </CardContent>
                         <CardFooter className="space-x-2">
-                            <ClientFormDialog client={data} callback={updateClient} label={"Edit"}/>
+                            <FormDialog data={data} callback={updateClient} label={"Edit"} FormComponent={ClientForm}/>
                             <Drawer>
                                 <Button variant="destructive" asChild={true}>
                                     <DrawerTrigger>
@@ -166,8 +168,24 @@ const Page = async ({params}: { params: { id: string } }) => {
                             )}
                         </CardContent>
                         <CardFooter>
-                            <ContactForm client={data}/>
+                            <FormDialog data={{client: data}} callback={createContact} FormComponent={ContactForm} label={"Add new contact"}/>
                         </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Projects</CardTitle>
+                            <CardDescription>Projects you have with <span
+                                className="font-semibold">{data.name}</span>.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div>
+                                {data.projects ? (
+                                    <Projects projects={data.projects}/>
+                                ) : (
+                                    <p className="font-semibold">No projects found.</p>
+                                )}
+                            </div>
+                        </CardContent>
                     </Card>
                 </div>
             </div>

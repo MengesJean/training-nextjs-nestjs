@@ -16,9 +16,9 @@ const navigationsItems = [
         description: "Manage your clients"
     },
     {
-        label: 'Contacts',
-        href: '/contacts',
-        description: "Manage your contacts"
+        label: 'Projects',
+        href: '/projects',
+        description: "Manage your projects"
     }
 ];
 

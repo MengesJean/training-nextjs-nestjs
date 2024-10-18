@@ -6,11 +6,10 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Client} from "@/lib/types/client.type";
-import {toast} from "sonner";
 
 
 
-const clientSchema = z.object({
+export const clientSchema = z.object({
     name: z.string().min(3, {
         message: "Name is too short (3 min)",
     }).max(255, {
@@ -20,11 +19,12 @@ const clientSchema = z.object({
 });
 
 type ClientFormProps = {
-    client: Client | null;
+    data: Client | null;
     callback: (values: z.infer<typeof clientSchema>) => void;
 }
 
-const ClientForm = ({client = null, callback}: ClientFormProps) => {
+const ClientForm = ({data = null, callback}: ClientFormProps) => {
+    const client = data;
     const form = useForm<z.infer<typeof clientSchema>>({
         resolver: zodResolver(clientSchema),
         defaultValues: {
@@ -36,7 +36,7 @@ const ClientForm = ({client = null, callback}: ClientFormProps) => {
         if(client?.id) {
             values.id = client.id;
         }
-        return await callback(values);
+        await callback(values);
 
     }
     return (
